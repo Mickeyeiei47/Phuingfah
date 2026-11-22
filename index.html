@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  <title>ภูอิงฟ้ารีสอร์ท ชะอำ | Room for Rent</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== GLOBAL ===== */
+
+    :root {
+      --blue: #287FB5;
+      --blue-light: #A9D5EF;
+      --blue-dark: #155A85;
+      --bg: #C9E1F0;
+      --white: #ffffff;
+      --text: #203F56;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Kanit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* ===== NAVBAR ===== */
+
+    nav {
+      width: 100%;
+      padding: 18px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, .96);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 3px 15px rgba(50, 120, 160, .08);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #155A85;
+      font-size: 23px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .brand img {
+      width: 55px;
+      height: 55px;
+      object-fit: contain;
+      border-radius: 50%;
+    }
+
+    @media(max-width:700px) {
+      .brand {
+        font-size: 17px;
+        gap: 8px;
+      }
+
+      .brand img {
+        width: 42px;
+        height: 42px;
+      }
+    }
+
+    nav a {
+      color: #294E68;
+      text-decoration: none;
+      margin-left: 22px;
+      font-size: 14px;
+      transition: .3s;
+    }
+
+    nav a:hover {
+      color: #0E659B;
+    }
+
+    /* ===== HERO ===== */
+
+    .hero {
+      min-height: 650px;
+
+      background:
+        linear-gradient(rgba(8, 43, 72, .42),
+          rgba(8, 43, 72, .68)),
+        url('ban.png') center/cover no-repeat;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .hero-content {
+      max-width: 850px;
+    }
+
+    .hero-content .sub {
+      font-size: 14px;
+      letter-spacing: 5px;
+      color: #A9D5EF;
+      margin-bottom: 15px;
+    }
+
+    .hero-content h1 {
+      font-size: clamp(35px, 6vw, 65px);
+      color: white;
+      font-weight: 600;
+      text-shadow: 0 3px 15px rgba(0, 0, 0, .3);
+      margin-bottom: 15px;
+    }
+
+    .hero-content p {
+      color: white;
+      font-size: 19px;
+      letter-spacing: 3px;
+      margin-bottom: 30px;
+    }
+
+    /* ===== BUTTON ===== */
+
+    .btn {
+      display: inline-block;
+      padding: 13px 28px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 15px;
+      margin: 6px;
+      transition: .3s;
+    }
+
+    .btn-blue {
+      background: #287FB5;
+      color: #173F5A;
+      font-weight: 500;
+    }
+
+    .btn-white {
+      background: white;
+      color: #155A85;
+    }
+
+    .btn-outline {
+      border: 1px solid white;
+      color: white;
+    }
+
+    .btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, .12);
+    }
+
+    /* ===== SECTION ===== */
+
+    section {
+      padding: 85px 8%;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .section-title h2 {
+      font-size: 32px;
+      color: #155A85;
+      font-weight: 600;
+    }
+
+    .section-title p {
+      color: #456D89;
+      margin-top: 8px;
+      letter-spacing: 3px;
+      font-size: 13px;
+    }
+
+    .section-title::after {
+      content: "";
+      display: block;
+      width: 65px;
+      height: 3px;
+      background: #287FB5;
+      margin: 18px auto 0;
+      border-radius: 5px;
+    }
+
+    /* ===== ABOUT ===== */
+
+    .about {
+      background: #A6CDE5;
+      text-align: center;
+    }
+
+    .about p {
+      max-width: 780px;
+      margin: auto;
+      line-height: 2.2;
+      color: #31536D;
+      font-size: 16px;
+    }
+
+    /* ===== ROOM ===== */
+
+    .rooms {
+      background: #C5DFF0;
+    }
+
+    .room-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+    }
+
+    .room-card {
+      background: white;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 5px 25px rgba(65, 140, 180, .10);
+      border: 1px solid #A9CDE3;
+      transition: .3s;
+    }
+
+    .room-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(65, 140, 180, .18);
+    }
+
+    .room-card img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+    }
+
+    .room-info {
+      padding: 23px;
+    }
+
+    .room-info h3 {
+      color: #155A85;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .room-info p {
+      color: #3D5F78;
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    /* ===== GALLERY ===== */
+
+    .gallery {
+      background: #AFCFE5;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .gallery-grid img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 15px;
+      border: 3px solid white;
+      box-shadow: 0 5px 15px rgba(50, 120, 160, .10);
+      transition: .3s;
+    }
+
+    .gallery-grid img:hover {
+      transform: scale(1.03);
+    }
+
+    /* ===== CONTACT ===== */
+
+    #contact {
+      background: #DCECF7;
+    }
+
+    .contact-box {
+      max-width: 650px;
+      margin: auto;
+      background: white;
+      padding: 40px 25px;
+      border-radius: 20px;
+      border: 1px solid #A4CDE5;
+      text-align: center;
+      box-shadow: 0 10px 35px rgba(65, 140, 180, .10);
+    }
+
+    .contact-box p {
+      color: #2F506A;
+      line-height: 2.2;
+      margin: 10px 0;
+    }
+
+    .contact-box strong {
+      color: #155A85;
+    }
+
+    .contact-box hr {
+      border: 1px solid #B1D1E5;
+      margin: 22px 0;
+    }
+
+    .facebook-icon {
+      width: 55px;
+      height: 55px;
+      object-fit: contain;
+      border-radius: 50%;
+      display: block;
+      margin: 15px auto;
+      transition: .3s;
+    }
+
+    .facebook-icon:hover {
+      transform: scale(1.12);
+    }
+
+    /* ===== FOOTER ===== */
+
+    footer {
+      background: #A0C6DF;
+      padding: 30px 15px;
+      text-align: center;
+      border-top: 1px solid #8DBDD9;
+      color: #31536D;
+      font-size: 13px;
+      line-height: 2;
+    }
+
+    footer p:first-child {
+      color: #155A85;
+      font-weight: 600;
+    }
+
+
+    /* ===== ROOM PHOTO LIGHTBOX ===== */
+    .room-photo {
+      cursor: zoom-in;
+      transition: transform .25s, filter .25s;
+    }
+
+    .room-photo:hover {
+      filter: brightness(.92);
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(5, 25, 42, .92);
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .lightbox.show {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: min(100%, 1100px);
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, .35);
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 0;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, .18);
+      color: #fff;
+      font-size: 32px;
+      cursor: pointer;
+    }
+
+    .lightbox-nav.prev {
+      left: 22px;
+    }
+
+    .lightbox-nav.next {
+      right: 22px;
+    }
+
+    .lightbox-count {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      background: rgba(0, 0, 0, .35);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 14px;
+      right: 22px;
+      border: 0;
+      background: transparent;
+      color: #fff;
+      font-size: 42px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .lightbox-caption {
+      position: absolute;
+      bottom: 18px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: #fff;
+      font-size: 16px;
+    }
+
+
+    /* ===== PHOTO MANAGER ===== */
+    .photo-manager {
+      background: #e7f3fa;
+      padding: 34px 8%;
+    }
+
+    .manager-panel {
+      max-width: 1000px;
+      margin: auto;
+      background: #fff;
+      border: 1px solid #a9cde3;
+      border-radius: 18px;
+      padding: 26px;
+      box-shadow: 0 8px 25px rgba(65, 140, 180, .10);
+    }
+
+    .manager-panel h2 {
+      color: #155A85;
+      margin-bottom: 8px;
+    }
+
+    .manager-note {
+      color: #456D89;
+      font-size: 14px;
+      line-height: 1.8;
+      margin-bottom: 18px;
+    }
+
+    .manager-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .manager-controls select,
+    .manager-controls input[type=file] {
+      max-width: 100%;
+      padding: 11px;
+      border: 1px solid #a9cde3;
+      border-radius: 10px;
+      background: #fff;
+      color: #203F56;
+    }
+
+    .manager-button {
+      border: 0;
+      border-radius: 24px;
+      padding: 12px 22px;
+      background: #287FB5;
+      color: #fff;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .manager-button:hover {
+      background: #155A85;
+    }
+
+    .manager-status {
+      margin-top: 12px;
+      color: #155A85;
+      font-size: 14px;
+    }
+
+    .manager-thumbs {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .manager-thumb {
+      border: 1px solid #c5dff0;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f8fcff;
+    }
+
+    .manager-thumb img {
+      width: 100%;
+      height: 105px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .manager-thumb button {
+      width: 100%;
+      border: 0;
+      padding: 8px;
+      background: #fff0f0;
+      color: #a12b2b;
+      cursor: pointer;
+      font: inherit;
+      font-size: 13px;
+    }
+
+    .gallery-grid img {
+      cursor: zoom-in;
+    }
+
+    @media(max-width:700px) {
+      .photo-manager {
+        padding: 35px 6%;
+      }
+
+      .manager-panel {
+        padding: 20px 15px;
+      }
+    }
+
+    /* ===== MOBILE ===== */
+
+    @media(max-width:700px) {
+
+      nav {
+        padding: 15px 4%;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .brand {
+        font-size: 21px;
+      }
+
+      nav a {
+        margin: 0 7px;
+        font-size: 12px;
+      }
+
+      .hero {
+        min-height: 530px;
+      }
+
+      .hero-content p {
+        font-size: 14px;
+        letter-spacing: 2px;
+      }
+
+      section {
+        padding: 60px 6%;
+      }
+
+      .section-title h2 {
+        font-size: 26px;
+      }
+
+      .contact-box {
+        padding: 30px 15px;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+
+  <nav>
+
+    <div class="brand">
+      <img src="phuing.jpg" alt="โลโก้ภูอิงฟ้ารีสอร์ท">
+      <span>PHUING-FAH RESORT CHA-AM</span>
+    </div>
+
+    <div>
+      <a href="#home">หน้าแรก</a>
+      <a href="#about">เกี่ยวกับเรา</a>
+      <a href="#rooms">ห้องพัก</a>
+      <a href="#gallery">รูปภาพ</a>
+      <a href="#contact">ติดต่อ</a>
+      <a href="admin.html"
+        style="background:#287fb5;color:#fff;padding:9px 15px;border-radius:22px;margin-left:18px">ผู้ดูแล</a>
+    </div>
+
+  </nav>
+
+
+  <!-- HERO -->
+
+  <header class="hero" id="home">
+
+    <div class="hero-content">
+
+      <div class="sub">
+        WELCOME TO
+      </div>
+
+      <h1>ภูอิงฟ้ารีสอร์ท ชะอำ</h1>
+
+      <p>PHUING-FAH RESORT CHA-AM</p>
+
+      <a href="#rooms" class="btn btn-blue">
+        ดูห้องพัก
+      </a>
+
+      <a href="#contact" class="btn btn-outline">
+        ติดต่อจองห้อง
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <!-- ABOUT -->
+
+  <section class="about" id="about">
+
+    <div class="section-title">
+
+      <h2>ยินดีต้อนรับสู่ภูอิงฟ้ารีสอร์ท ชะอำ</h2>
+
+      <p>PHUING-FAH RESORT CHA-AM</p>
+
+    </div>
+
+    <p>
+      ภูอิงฟ้ารีสอร์ท ชะอำ
+
+      พร้อมต้อนรับผู้ที่กำลังมองหาห้องพัก
+      สามารถติดต่อสอบถามรายละเอียด
+      และจองห้องพักได้โดยตรง
+
+      สอบถามข้อมูลเพิ่มเติมได้ทุกวัน
+    </p>
+
+  </section>
+
+
+  <!-- ROOMS -->
+
+  <section class="rooms" id="rooms">
+
+    <div class="section-title">
+
+      <h2>ห้องพักของเรา</h2>
+
+      <p>ROOM FOR RENT</p>
+
+    </div>
+
+
+    <div class="room-grid">
+
+
+      <div class="room-card">
+
+        <div class="room-photo-wrap" data-room="1">
+          <img
+            src="https://media.discordapp.net/attachments/1555241330022547542/1573924033152425984/images.png?ex=6b03c67b&is=6b0274fb&hm=0fc3682758a448e3d5210484bd63a1d505ead794d614c261776191b9543ac80e&format=webp&quality=lossless"
+            alt="ห้องพัก 1" class="room-photo" onclick="openRoomGallery(1, 0)" role="button" tabindex="0">
+          <button class="room-photo-nav prev" type="button" onclick="changeRoomPhoto(event,1,-1)"
+            aria-label="รูปก่อนหน้า">‹</button>
+          <button class="room-photo-nav next" type="button" onclick="changeRoomPhoto(event,1,1)"
+            aria-label="รูปถัดไป">›</button>
+          <span class="photo-count">1 / 1</span>
+        </div>
+
+        <div class="room-info">
+
+          <h3>ห้องพัก 1</h3>
+
+          <p>
+            ห้องพักบรรยากาศสบาย ๆ
+            สอบถามราคาและรายละเอียดเพิ่มเติม
+          </p>
+
+          <a href="#contact" class="btn btn-blue">
+            สอบถามห้องพัก
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <div class="room-card">
+
+        <div class="room-photo-wrap" data-room="2">
+          <img
+            src="https://media.discordapp.net/attachments/1555241330022547542/1573924033152425984/images.png?ex=6b03c67b&is=6b0274fb&hm=0fc3682758a448e3d5210484bd63a1d505ead794d614c261776191b9543ac80e&format=webp&quality=lossless"
+            alt="ห้องพัก 2" class="room-photo" onclick="openRoomGallery(2, 0)" role="button" tabindex="0">
+          <button class="room-photo-nav prev" type="button" onclick="changeRoomPhoto(event,2,-1)"
+            aria-label="รูปก่อนหน้า">‹</button>
+          <button class="room-photo-nav next" type="button" onclick="changeRoomPhoto(event,2,1)"
+            aria-label="รูปถัดไป">›</button>
+          <span class="photo-count">1 / 1</span>
+        </div>
+
+        <div class="room-info">
+
+          <h3>ห้องพัก 2</h3>
+
+          <p>
+            ห้องพักสำหรับการพักผ่อน
+            สอบถามราคาและรายละเอียดเพิ่มเติม
+          </p>
+
+          <a href="#contact" class="btn btn-blue">
+            สอบถามห้องพัก
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <div class="room-card">
+
+        <div class="room-photo-wrap" data-room="3">
+          <img
+            src="https://media.discordapp.net/attachments/1555241330022547542/1573924033152425984/images.png?ex=6b03c67b&is=6b0274fb&hm=0fc3682758a448e3d5210484bd63a1d505ead794d614c261776191b9543ac80e&format=webp&quality=lossless"
+            alt="ห้องพัก 3" class="room-photo" onclick="openRoomGallery(3, 0)" role="button" tabindex="0">
+          <button class="room-photo-nav prev" type="button" onclick="changeRoomPhoto(event,3,-1)"
+            aria-label="รูปก่อนหน้า">‹</button>
+          <button class="room-photo-nav next" type="button" onclick="changeRoomPhoto(event,3,1)"
+            aria-label="รูปถัดไป">›</button>
+          <span class="photo-count">1 / 1</span>
+        </div>
+
+        <div class="room-info">
+
+          <h3>ห้องพัก 3</h3>
+
+          <p>
+            ห้องพักพร้อมต้อนรับทุกท่าน
+            สอบถามราคาและรายละเอียดเพิ่มเติม
+          </p>
+
+          <a href="#contact" class="btn btn-blue">
+            สอบถามห้องพัก
+          </a>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+  <!-- GALLERY -->
+
+  <section class="gallery" id="gallery">
+
+    <div class="section-title">
+
+      <h2>บรรยากาศรีสอร์ท</h2>
+
+      <p>OUR GALLERY</p>
+
+    </div>
+
+
+    <div class="gallery-grid" id="resortGalleryGrid"></div>
+
+  </section>
+
+
+  <!-- CONTACT -->
+
+  <section id="contact">
+
+    <div class="section-title">
+
+      <h2>ติดต่อจองห้องพัก</h2>
+
+      <p>CONTACT & BOOKING</p>
+
+    </div>
+
+
+    <div class="contact-box">
+
+      <p>📞 โทรศัพท์</p>
+
+      <p>
+        <strong>K.มิกซ์ 0917196390</strong>
+        <br>
+        <strong>K.นาง 0988840014</strong>
+      </p>
+
+
+      <hr>
+
+
+      <p>💬 FACEBOOK PAGE</p>
+
+      <p>
+        <strong>ภูอิงฟ้ารีสอร์ท ชะอำ</strong>
+      </p>
+
+
+      <a href="https://www.facebook.com/profile.php?id=61594818307956" target="_blank" rel="noopener">
+
+        <img src="fac.png" class="facebook-icon" alt="Facebook ภูอิงฟ้ารีสอร์ท">
+
+      </a>
+
+
+      <hr>
+
+
+      <p>📍 ภูอิงฟ้ารีสอร์ท ชะอำ</p>
+
+      <a class="btn btn-blue" href="https://maps.app.goo.gl/1K8We31XLrBi3uud9" target="_blank" rel="noopener">
+
+        เปิด Google Maps
+
+      </a>
+
+
+      <br>
+
+
+      <a class="btn btn-white" href="tel:0917196390">
+
+        โทรจองห้องพัก
+
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <p>© 2026 PHUING-FAH RESORT CHA-AM</p>
+
+    <p>ขอบคุณที่เลือกใช้บริการภูอิงฟ้ารีสอร์ท ชะอำ</p>
+
+  </footer>
+
+
+
+  <!-- PHOTO LIGHTBOX: คลิกภาพเพื่อเปิดดู และใช้ปุ่มลูกศรเลื่อนภาพ -->
+  <div class="lightbox" id="roomLightbox" onclick="if(event.target===this) closeLightbox()" aria-modal="true"
+    role="dialog" aria-label="ดูรูปภาพ">
+    <button class="lightbox-close" type="button" onclick="closeLightbox()" aria-label="ปิด">&times;</button>
+    <div class="lightbox-count" id="lightboxCount"></div>
+    <button class="lightbox-nav prev" type="button" onclick="moveLightbox(-1)" aria-label="รูปก่อนหน้า">‹</button>
+    <img id="lightboxImage" src="" alt="รูปภาพขนาดใหญ่">
+    <button class="lightbox-nav next" type="button" onclick="moveLightbox(1)" aria-label="รูปถัดไป">›</button>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <script>
+    const defaultPhoto = 'https://media.discordapp.net/attachments/1555241330022547542/1573924033152425984/images.png?ex=6b03c67b&is=6b0274fb&hm=0fc3682758a448e3d5210484bd63a1d505ead794d614c261776191b9543ac80e&format=webp&quality=lossless';
+    window.roomPhotos = {1: [defaultPhoto], 2: [defaultPhoto], 3: [defaultPhoto]};
+    let roomPhotos = window.roomPhotos;
+    window.resortPhotos = [defaultPhoto, defaultPhoto, defaultPhoto];
+    let resortPhotos = window.resortPhotos;
+    let activePhotos = [], activeIndex = 0, activeCaption = '';
+    function updateRoomPhoto(room, index) {const photos = roomPhotos[room] || []; const wrap = document.querySelector(`.room-photo-wrap[data-room="${room}"]`); if (!wrap) return; const img = wrap.querySelector('img'); if (!photos.length) {img.style.visibility = 'hidden'; wrap.querySelector('.photo-count').textContent = 'ยังไม่มีรูป'; return;} img.style.visibility = 'visible'; index = (index + photos.length) % photos.length; img.src = photos[index]; img.alt = `ห้องพัก ${room} รูปที่ ${index + 1}`; wrap.querySelector('.photo-count').textContent = `${index + 1} / ${photos.length}`; wrap.dataset.index = index; wrap.querySelectorAll('.room-photo-nav').forEach(b => b.style.display = photos.length > 1 ? 'block' : 'none');}
+    function changeRoomPhoto(event, room, direction) {event.stopPropagation(); const wrap = document.querySelector(`.room-photo-wrap[data-room="${room}"]`); updateRoomPhoto(room, Number(wrap.dataset.index || 0) + direction);}
+    function openRoomGallery(room, index) {activePhotos = roomPhotos[room] || []; activeCaption = `ห้องพัก ${room}`; showLightbox(index);}
+    function openGallery(index) {activePhotos = resortPhotos; activeCaption = 'บรรยากาศรีสอร์ท'; showLightbox(index);}
+    function showLightbox(index) {if (!activePhotos.length) return; activeIndex = (index + activePhotos.length) % activePhotos.length; document.getElementById('lightboxImage').src = activePhotos[activeIndex]; document.getElementById('lightboxImage').alt = activeCaption; document.getElementById('lightboxCaption').textContent = activeCaption; document.getElementById('lightboxCount').textContent = `${activeIndex + 1} / ${activePhotos.length}`; document.querySelectorAll('.lightbox-nav').forEach(b => b.style.display = activePhotos.length > 1 ? 'block' : 'none'); document.getElementById('roomLightbox').classList.add('show'); document.body.style.overflow = 'hidden';}
+    function moveLightbox(direction) {showLightbox(activeIndex + direction);}
+    function closeLightbox() {document.getElementById('roomLightbox').classList.remove('show'); document.body.style.overflow = '';}
+    function renderGallery() {const grid = document.getElementById('resortGalleryGrid'); grid.innerHTML = ''; resortPhotos.forEach((src, i) => {const img = document.createElement('img'); img.src = src; img.alt = `บรรยากาศรีสอร์ท ${i + 1}`; img.loading = 'lazy'; img.onclick = () => openGallery(i); img.tabIndex = 0; img.onkeydown = e => {if (e.key === 'Enter' || e.key === ' ') {e.preventDefault(); openGallery(i);} }; grid.appendChild(img);});}
+    function refreshPhotoViews() {roomPhotos = window.roomPhotos; resortPhotos = window.resortPhotos;[1, 2, 3].forEach(r => updateRoomPhoto(r, 0)); renderGallery();}
+    window.refreshPhotoViews = refreshPhotoViews;
+    document.addEventListener('keydown', event => {if (event.key === 'Escape') closeLightbox(); if (document.getElementById('roomLightbox').classList.contains('show')) {if (event.key === 'ArrowLeft') moveLightbox(-1); if (event.key === 'ArrowRight') moveLightbox(1);} });
+    refreshPhotoViews();
+  </script>
+  <script type="module">
+    import {createClient} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    import {SUPABASE_URL, SUPABASE_ANON_KEY} from './supabase-config.js';
+    if (SUPABASE_URL && SUPABASE_ANON_KEY) {
+      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const {data, error} = await supabase.from('resort_photos').select('*').order('created_at', {ascending: true});
+      if (!error && data && data.length) {
+        const fallbackGallery = [...window.resortPhotos];
+        window.roomPhotos = {1: [], 2: [], 3: []}; window.resortPhotos = [];
+        for (const photo of data) {
+          const {data: publicData} = supabase.storage.from('resort-photos').getPublicUrl(photo.storage_path);
+          if (photo.section === 'room' && [1, 2, 3].includes(photo.room_number)) window.roomPhotos[photo.room_number].push(publicData.publicUrl);
+          if (photo.section === 'gallery') window.resortPhotos.push(publicData.publicUrl);
+        }
+        [1, 2, 3].forEach(r => {if (!window.roomPhotos[r].length) window.roomPhotos[r] = [document.querySelector(`.room-photo-wrap[data-room="${r}"] img`).src];});
+        if (!window.resortPhotos.length) window.resortPhotos = fallbackGallery;
+        window.refreshPhotoViews();
+      } else if (error) console.warn('Cloud photo load:', error.message);
+    }
+  </script>
+
+</body>
+
+</html>
