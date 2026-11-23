@@ -276,50 +276,23 @@
 
     .gallery-grid {
       display: grid;
-      /* จัดรูปเป็น 3 คอลัมน์เหมือนการ์ดห้องพัก */
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 28px;
-      align-items: start;
-    }
-
-    .gallery-card {
-      background: #fff;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid #A9CDE3;
-      box-shadow: 0 5px 25px rgba(65, 140, 180, .10);
-      transition: .3s;
-    }
-
-    .gallery-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 30px rgba(65, 140, 180, .18);
+      grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
     }
 
     .gallery-grid img {
-      display: block;
       width: 100%;
-      height: 240px;
+      height: 250px;
       object-fit: cover;
-      border: 0;
-      border-radius: 0;
-      box-shadow: none;
+      border-radius: 15px;
+      border: 3px solid white;
+      box-shadow: 0 5px 15px rgba(50, 120, 160, .10);
       transition: .3s;
     }
 
-    .gallery-card-info {
-      padding: 18px 22px;
-      color: #155A85;
-      font-size: 17px;
-      font-weight: 500;
-    }
-
-    .gallery-card-info small {
-      display: block;
-      margin-top: 5px;
-      color: #456D89;
-      font-size: 13px;
-      font-weight: 400;
+    .gallery-grid img:hover {
+      transform: scale(1.03);
     }
 
     /* ===== CONTACT ===== */
@@ -577,22 +550,7 @@
       cursor: zoom-in;
     }
 
-    @media(max-width:900px) {
-      .gallery-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
     @media(max-width:700px) {
-      .gallery-grid {
-        grid-template-columns: 1fr;
-        gap: 18px;
-      }
-
-      .gallery-grid img {
-        height: 230px;
-      }
-
       .photo-manager {
         padding: 35px 6%;
       }
@@ -663,8 +621,6 @@
       <a href="#rooms">ห้องพัก</a>
       <a href="#gallery">รูปภาพ</a>
       <a href="#contact">ติดต่อ</a>
-      <a href="admin.html"
-        style="background:#287fb5;color:#fff;padding:9px 15px;border-radius:22px;margin-left:18px">ผู้ดูแล</a>
     </div>
 
   </nav>
@@ -957,7 +913,7 @@
     function showLightbox(index) {if (!activePhotos.length) return; activeIndex = (index + activePhotos.length) % activePhotos.length; document.getElementById('lightboxImage').src = activePhotos[activeIndex]; document.getElementById('lightboxImage').alt = activeCaption; document.getElementById('lightboxCaption').textContent = activeCaption; document.getElementById('lightboxCount').textContent = `${activeIndex + 1} / ${activePhotos.length}`; document.querySelectorAll('.lightbox-nav').forEach(b => b.style.display = activePhotos.length > 1 ? 'block' : 'none'); document.getElementById('roomLightbox').classList.add('show'); document.body.style.overflow = 'hidden';}
     function moveLightbox(direction) {showLightbox(activeIndex + direction);}
     function closeLightbox() {document.getElementById('roomLightbox').classList.remove('show'); document.body.style.overflow = '';}
-    function renderGallery() {const grid = document.getElementById('resortGalleryGrid'); grid.innerHTML = ''; resortPhotos.forEach((src, i) => {const card = document.createElement('div'); card.className = 'gallery-card'; const img = document.createElement('img'); img.src = src; img.alt = `บรรยากาศรีสอร์ท ${i + 1}`; img.loading = 'lazy'; img.onclick = () => openGallery(i); img.tabIndex = 0; img.onkeydown = e => {if (e.key === 'Enter' || e.key === ' ') {e.preventDefault(); openGallery(i);} }; const info = document.createElement('div'); info.className = 'gallery-card-info'; info.textContent = `บรรยากาศรีสอร์ท ${i + 1}`; const note = document.createElement('small'); note.textContent = 'คลิกเพื่อดูภาพขนาดใหญ่'; info.appendChild(note); card.appendChild(img); card.appendChild(info); grid.appendChild(card);});}
+    function renderGallery() {const grid = document.getElementById('resortGalleryGrid'); grid.innerHTML = ''; resortPhotos.forEach((src, i) => {const img = document.createElement('img'); img.src = src; img.alt = `บรรยากาศรีสอร์ท ${i + 1}`; img.loading = 'lazy'; img.onclick = () => openGallery(i); img.tabIndex = 0; img.onkeydown = e => {if (e.key === 'Enter' || e.key === ' ') {e.preventDefault(); openGallery(i);} }; grid.appendChild(img);});}
     function refreshPhotoViews() {roomPhotos = window.roomPhotos; resortPhotos = window.resortPhotos;[1, 2, 3].forEach(r => updateRoomPhoto(r, 0)); renderGallery();}
     window.refreshPhotoViews = refreshPhotoViews;
     document.addEventListener('keydown', event => {if (event.key === 'Escape') closeLightbox(); if (document.getElementById('roomLightbox').classList.contains('show')) {if (event.key === 'ArrowLeft') moveLightbox(-1); if (event.key === 'ArrowRight') moveLightbox(1);} });
