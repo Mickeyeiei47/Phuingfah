@@ -227,18 +227,20 @@
 
     .room-grid {
       display: grid;
-      grid-template-columns:
-        repeat(auto-fit, minmax(260px, 1fr));
-      gap: 28px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+      align-items: start;
     }
 
     .room-card {
       background: white;
-      border-radius: 18px;
+      border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 5px 25px rgba(65, 140, 180, .10);
       border: 1px solid #A9CDE3;
       transition: .3s;
+      min-width: 0;
+      height: 100%;
     }
 
     .room-card:hover {
@@ -248,8 +250,16 @@
 
     .room-card img {
       width: 100%;
-      height: 240px;
+      height: 220px;
       object-fit: cover;
+    }
+
+    @media (max-width: 900px) {
+      .room-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 600px) {
+      .room-grid { grid-template-columns: 1fr; gap: 18px; }
+      .room-card img { height: 210px; }
     }
 
     .room-info {
@@ -650,8 +660,6 @@
       <a href="#rooms">ห้องพัก</a>
       <a href="#gallery">รูปภาพ</a>
       <a href="#contact">ติดต่อ</a>
-      <a href="admin.html"
-        style="background:#287fb5;color:#fff;padding:9px 15px;border-radius:22px;margin-left:18px">ผู้ดูแล</a>
     </div>
 
   </nav>
@@ -742,13 +750,9 @@
 
           <h3>ห้องพัก 1</h3>
 
-          <p>
-            ห้องพักบรรยากาศสบาย ๆ
-            สอบถามราคาและรายละเอียดเพิ่มเติม
-          </p>
-
-          <div class="room-price">สอบถามราคา <span>/ เดือน</span></div>
-          <ul class="room-details">
+          <p data-room-description="1">ห้องเช่ารายเดือน สอบถามรายละเอียดเพิ่มเติม</p>
+          <div class="room-price" data-room-price="1">สอบถามราคา <span>/ เดือน</span></div>
+          <ul class="room-details" data-room-details="1">
             <li>ห้องเช่ารายเดือน</li>
             <li>สอบถามรายละเอียดและสิ่งอำนวยความสะดวก</li>
             <li>สอบถามเงื่อนไขการเช่าเพิ่มเติม</li>
@@ -780,13 +784,9 @@
 
           <h3>ห้องพัก 2</h3>
 
-          <p>
-            ห้องพักสำหรับการพักผ่อน
-            สอบถามราคาและรายละเอียดเพิ่มเติม
-          </p>
-
-          <div class="room-price">สอบถามราคา <span>/ เดือน</span></div>
-          <ul class="room-details">
+          <p data-room-description="2">ห้องเช่ารายเดือน สอบถามรายละเอียดเพิ่มเติม</p>
+          <div class="room-price" data-room-price="2">สอบถามราคา <span>/ เดือน</span></div>
+          <ul class="room-details" data-room-details="2">
             <li>ห้องเช่ารายเดือน</li>
             <li>สอบถามรายละเอียดและสิ่งอำนวยความสะดวก</li>
             <li>สอบถามเงื่อนไขการเช่าเพิ่มเติม</li>
@@ -818,13 +818,9 @@
 
           <h3>ห้องพัก 3</h3>
 
-          <p>
-            ห้องพักพร้อมต้อนรับทุกท่าน
-            สอบถามราคาและรายละเอียดเพิ่มเติม
-          </p>
-
-          <div class="room-price">สอบถามราคา <span>/ เดือน</span></div>
-          <ul class="room-details">
+          <p data-room-description="3">ห้องเช่ารายเดือน สอบถามรายละเอียดเพิ่มเติม</p>
+          <div class="room-price" data-room-price="3">สอบถามราคา <span>/ เดือน</span></div>
+          <ul class="room-details" data-room-details="3">
             <li>ห้องเช่ารายเดือน</li>
             <li>สอบถามรายละเอียดและสิ่งอำนวยความสะดวก</li>
             <li>สอบถามเงื่อนไขการเช่าเพิ่มเติม</li>
@@ -989,7 +985,25 @@
         if (!window.resortPhotos.length) window.resortPhotos = fallbackGallery;
         window.refreshPhotoViews();
       } else if (error) console.warn('Cloud photo load:', error.message);
+      // โหลดราคาห้องและรายละเอียดจาก Supabase (ข้อมูลนี้ผู้ดูแลแก้ได้)
+      const {data: roomData, error: roomError} = await supabase.from('resort_room_info').select('*').order('room_number');
+      if (!roomError && roomData) {
+        for (const room of roomData) {
+          const priceEl = document.querySelector(`[data-room-price="${room.room_number}"]`);
+          const descEl = document.querySelector(`[data-room-description="${room.room_number}"]`);
+          const detailEl = document.querySelector(`[data-room-details="${room.room_number}"]`);
+          if (priceEl) priceEl.innerHTML = `${escapeRoomText(room.price || 'สอบถามราคา')} <span>/ เดือน</span>`;
+          if (descEl) descEl.textContent = room.description || '';
+          if (detailEl) {
+            detailEl.replaceChildren();
+            (room.details || '').split('\n').map(x=>x.trim()).filter(Boolean).forEach(line=>{
+              const li=document.createElement('li'); li.textContent=line; detailEl.appendChild(li);
+            });
+          }
+        }
+      } else if (roomError) console.warn('Room info load:', roomError.message);
     }
+    function escapeRoomText(value) { const div=document.createElement('div'); div.textContent=String(value); return div.innerHTML; }
   </script>
 
 </body>
