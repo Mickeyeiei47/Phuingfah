@@ -426,6 +426,26 @@
 
 
     /* ===== ROOM PHOTO LIGHTBOX ===== */
+    /* ซ่อนปุ่มลูกศรเล็กบนรูป ใช้การปัดเพื่อเปลี่ยนรูปแทน */
+    .room-photo-wrap {
+      position: relative;
+      overflow: hidden;
+      touch-action: pan-y;
+    }
+
+    .room-photo-nav {
+      display: none !important;
+    }
+
+    .photo-count {
+      display: block;
+      padding: 7px 12px;
+      color: #31536D;
+      font-size: 13px;
+      font-weight: 600;
+      background: #fff;
+    }
+
     .room-photo {
       cursor: zoom-in;
       transition: transform .25s, filter .25s;
@@ -1006,6 +1026,27 @@
     function renderGallery() {const grid = document.getElementById('resortGalleryGrid'); grid.innerHTML = ''; resortPhotos.forEach((src, i) => {const img = document.createElement('img'); img.src = src; img.alt = `บรรยากาศรีสอร์ท ${i + 1}`; img.loading = 'lazy'; img.onclick = () => openGallery(i); img.tabIndex = 0; img.onkeydown = e => {if (e.key === 'Enter' || e.key === ' ') {e.preventDefault(); openGallery(i);} }; grid.appendChild(img);});}
     function refreshPhotoViews() {roomPhotos = window.roomPhotos; resortPhotos = window.resortPhotos;[1, 2, 3].forEach(r => updateRoomPhoto(r, 0)); renderGallery();}
     window.refreshPhotoViews = refreshPhotoViews;
+
+    // ปัดซ้าย/ขวาบนรูปห้องพักเพื่อเปลี่ยนภาพ โดยไม่ต้องมีปุ่มลูกศร
+    document.querySelectorAll('.room-photo-wrap').forEach(wrap => {
+      let touchStartX = 0;
+      let touchStartY = 0;
+      wrap.addEventListener('touchstart', event => {
+        const touch = event.changedTouches[0];
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+      }, { passive: true });
+
+      wrap.addEventListener('touchend', event => {
+        const touch = event.changedTouches[0];
+        const deltaX = touch.clientX - touchStartX;
+        const deltaY = touch.clientY - touchStartY;
+        if (Math.abs(deltaX) < 45 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+        const room = Number(wrap.dataset.room);
+        if (!room || !(roomPhotos[room] || []).length) return;
+        updateRoomPhoto(room, Number(wrap.dataset.index || 0) + (deltaX < 0 ? 1 : -1));
+      }, { passive: true });
+    });
     document.addEventListener('keydown', event => {if (event.key === 'Escape') closeLightbox(); if (document.getElementById('roomLightbox').classList.contains('show')) {if (event.key === 'ArrowLeft') moveLightbox(-1); if (event.key === 'ArrowRight') moveLightbox(1);} });
     refreshPhotoViews();
 
