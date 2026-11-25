@@ -291,6 +291,7 @@
       color: #456D89;
     }
     .room-details {
+      display: none;
       list-style: none;
       margin: 12px 0 16px;
       padding: 12px 14px;
@@ -300,6 +301,28 @@
       color: #31536D;
       font-size: 14px;
       line-height: 1.9;
+    }
+
+    .room-details.is-open {
+      display: block;
+    }
+
+    .room-details-button {
+      display: inline-block;
+      margin: 10px 6px 10px 0;
+      padding: 11px 22px;
+      border: 1px solid #287FB5;
+      border-radius: 30px;
+      background: #fff;
+      color: #155A85;
+      font: inherit;
+      cursor: pointer;
+      transition: .3s;
+    }
+
+    .room-details-button:hover {
+      background: #EAF5FC;
+      transform: translateY(-2px);
     }
     .room-details li::before {
       content: "• ";
@@ -756,11 +779,16 @@
 
           <p data-room-description="1">ห้องเช่ารายเดือน สอบถามรายละเอียดเพิ่มเติม</p>
           <div class="room-price" data-room-price="1">สอบถามราคา <span>/ เดือน</span></div>
-          <ul class="room-details" data-room-details="1">
+          <ul class="room-details" id="room-details-1" data-room-details="1">
             <li>ห้องเช่ารายเดือน</li>
             <li>สอบถามรายละเอียดและสิ่งอำนวยความสะดวก</li>
             <li>สอบถามเงื่อนไขการเช่าเพิ่มเติม</li>
           </ul>
+
+          <button class="room-details-button" type="button"
+            aria-expanded="false"
+            aria-controls="room-details-1"
+            onclick="toggleRoomDetails(1, this)">รายละเอียด</button>
 
           <a href="#contact" class="btn btn-blue">
             ติดต่อเช่าห้อง
@@ -790,11 +818,16 @@
 
           <p data-room-description="2">ห้องเช่ารายเดือน สอบถามรายละเอียดเพิ่มเติม</p>
           <div class="room-price" data-room-price="2">สอบถามราคา <span>/ เดือน</span></div>
-          <ul class="room-details" data-room-details="2">
+          <ul class="room-details" id="room-details-2" data-room-details="2">
             <li>ห้องเช่ารายเดือน</li>
             <li>สอบถามรายละเอียดและสิ่งอำนวยความสะดวก</li>
             <li>สอบถามเงื่อนไขการเช่าเพิ่มเติม</li>
           </ul>
+
+          <button class="room-details-button" type="button"
+            aria-expanded="false"
+            aria-controls="room-details-2"
+            onclick="toggleRoomDetails(2, this)">รายละเอียด</button>
 
           <a href="#contact" class="btn btn-blue">
             ติดต่อเช่าห้อง
@@ -824,11 +857,16 @@
 
           <p data-room-description="3">ห้องเช่ารายเดือน สอบถามรายละเอียดเพิ่มเติม</p>
           <div class="room-price" data-room-price="3">สอบถามราคา <span>/ เดือน</span></div>
-          <ul class="room-details" data-room-details="3">
+          <ul class="room-details" id="room-details-3" data-room-details="3">
             <li>ห้องเช่ารายเดือน</li>
             <li>สอบถามรายละเอียดและสิ่งอำนวยความสะดวก</li>
             <li>สอบถามเงื่อนไขการเช่าเพิ่มเติม</li>
           </ul>
+
+          <button class="room-details-button" type="button"
+            aria-expanded="false"
+            aria-controls="room-details-3"
+            onclick="toggleRoomDetails(3, this)">รายละเอียด</button>
 
           <a href="#contact" class="btn btn-blue">
             ติดต่อเช่าห้อง
@@ -970,6 +1008,15 @@
     window.refreshPhotoViews = refreshPhotoViews;
     document.addEventListener('keydown', event => {if (event.key === 'Escape') closeLightbox(); if (document.getElementById('roomLightbox').classList.contains('show')) {if (event.key === 'ArrowLeft') moveLightbox(-1); if (event.key === 'ArrowRight') moveLightbox(1);} });
     refreshPhotoViews();
+
+    function toggleRoomDetails(roomNumber, button) {
+      const details = document.getElementById(`room-details-${roomNumber}`);
+      if (!details) return;
+      const isOpen = details.classList.toggle('is-open');
+      button.setAttribute('aria-expanded', String(isOpen));
+      button.textContent = isOpen ? 'ซ่อนรายละเอียด' : 'รายละเอียด';
+    }
+    window.toggleRoomDetails = toggleRoomDetails;
   </script>
   <script type="module">
     import {createClient} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
